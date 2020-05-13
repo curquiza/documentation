@@ -20,7 +20,7 @@ You can install and run MeiliSearch on your machine using `curl`.
 
 ```bash
 $ curl -L https://install.meilisearch.com | sh
-$ ./meilisearch
+$ ./meilisearch --master-key=myMasterKey
 ```
 
 There are [other ways to install MeiliSearch](/guides/introduction/quick_start_guide.md#download-and-launch).
@@ -30,6 +30,7 @@ MeiliSearch is open-source and can run either on you server or on any cloud prov
 ::: note
 
 The host URL and the API key you will provide in the next steps correspond to the credentials of this MeiliSearch instance.
+In the example above, the host URL is `http://localhost:7700` and the API key is `myMasterKey`.
 
 :::
 
@@ -83,15 +84,15 @@ In our case, the main container is `theme-default-content` and the selector the 
 
 ### Run the Scraper
 
-You can run the scraper with Docker:
+You can run the scraper with Docker. With our local MeiliSearch instance set up at [the first step](./search_bar_for_docs.md#run-a-meilisearch-instance), we run:
 
 ```bash
 $ docker run -t --rm \
     --network=host \
-    -e MEILISEARCH_HOST_URL=<your-meilisearch-host-url> \
-    -e MEILISEARCH_API_KEY=<your-meilisearch-api-key> \
+    -e MEILISEARCH_HOST_URL='http://localhost:7700' \
+    -e MEILISEARCH_API_KEY='myMasterKey' \
     -v <absolute-path-to-your-config-file>:/docs-scraper/config.json \
-    getmeili/docs-scraper:v0.9.0 pipenv run ./docs_scraper config.json
+    getmeili/docs-scraper:latest pipenv run ./docs_scraper config.json
 ```
 
 ::: note
@@ -100,10 +101,9 @@ If you don't want to use Docker, here are [other ways to run the scraper](https:
 
 :::
 
-`<your-meilisearch-host-url>` and `<your-meilisearch-api-key>` should be replaced by the credentials of the MeiliSearch instance you set up at [the first step](./search_bar_for_docs.md#run-a-meilisearch-instance).
 `<absolute-path-to-your-config-file>` should be the **absolute** path of your configuration file defined at [the previous step](./search_bar_for_docs.md#configuration-file).
 
-The API key you must provide should have the permissions to add documents into your MeiliSearch instance. Thus, you need to provide the private key.
+The API key you must provide should have the permissions to add documents into your MeiliSearch instance. It means the private key is enough to perform this kind of request. Thus, in a production environment, we recommend providing the private key instead of the master key.
 _More about [MeiliSearch authentication](/guides/advanced_guides/authentication.md)._
 
 ::: tip
@@ -147,14 +147,14 @@ module.exports = {
 }
 ```
 
-The `hostUrl` and the `apiKey` fields are the credentials of the MeiliSearch instance you set up at [the first step](./search_bar_for_docs.md#run-a-meilisearch-instance).
+The `hostUrl` and the `apiKey` fields are the credentials of the MeiliSearch instance. Following on from this tutorial, we can define them as `http://localhost:7700` and `myMasterKey` respectively.
 `indexUid` is the index identifier in your MeiliSearch instance in which your website content is stored. It has been defined in the [config file](./search_bar_for_docs.md#configuration-file).
 
 These three fields are mandatory, but more [optional fields are available](https://github.com/meilisearch/vuepress-plugin-meilisearch#customization) to customize your search bar.
 
 ::: warning
 
-Since the configuration file is public, we recommend providing the MeiliSearch public key, which is enough to perform search requests.
+Since the configuration file is public, we strongly recommend providing the MeiliSearch public key in a production environment, which is enough to perform search requests.
 Read more about [MeiliSearch authentication](/guides/advanced_guides/authentication.md).
 
 :::
@@ -188,13 +188,13 @@ If you don't use Vuepress for your documentation, we provide a [front-end SDK](h
 </html>
 ```
 
-The `hostUrl` and the `apiKey` are the credentials of the MeiliSearch instance you set up at [the first step](./search_bar_for_docs.md#run-a-meilisearch-instance).
+The `hostUrl` and the `apiKey` fields are the credentials of the MeiliSearch instance. Following on from this tutorial, we can define them as `http://localhost:7700` and `myMasterKey` respectively.
 `indexUid` is the index identifier in your MeiliSearch instance in which your website content is stored. It has been defined in the [config file](./search_bar_for_docs.md#configuration-file).
 `inputSelector` is the `id` attribute of the HTML search input tag.
 
 ::: warning
 
-We recommend providing the MeiliSearch public key, which is enough to perform search requests.
+We strongly recommend providing the MeiliSearch public key in a production environment, which is enough to perform search requests.
 Read more about [MeiliSearch authentication](/guides/advanced_guides/authentication.md).
 
 :::
