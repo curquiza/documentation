@@ -147,7 +147,7 @@ module.exports = {
 }
 ```
 
-The `hostUrl` and the `apiKey` fields are the credentials of the MeiliSearch instance. Following on from this tutorial, we can define them as `http://localhost:7700` and `myMasterKey` respectively.
+The `hostUrl` and the `apiKey` fields are the credentials of the MeiliSearch instance. Following on from this tutorial, they are respectively `http://localhost:7700` and `myMasterKey`.
 `indexUid` is the index identifier in your MeiliSearch instance in which your website content is stored. It has been defined in the [config file](./search_bar_for_docs.md#configuration-file).
 
 These three fields are mandatory, but more [optional fields are available](https://github.com/meilisearch/vuepress-plugin-meilisearch#customization) to customize your search bar.
